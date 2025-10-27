@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Chen - Mechanical Engineering Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Richer, Deeper Palette for Engineering
+                        'primary-bg': '#ffffff',      // White
+                        'card-bg': '#f8fafc',         // Slate-50, for cards
+                        'border-color': '#e2e8f0',   // Slate-200, for borders
+                        'text-header': '#0f172a',    // Slate-900, main headers
+                        'text-body': '#334155',      // Slate-700, main body text
+
+                        'brand-dark-blue': '#1e3a8a', // Darker Blue (blue-800)
+                        'brand-rich-green': '#065f46', // Darker Green (emerald-800)
+                        'brand-accent-orange': '#ea580c', // Deep Orange (orange-700)
+                        'tag-bg': '#e2e8f0',           // Slate-200, for tags
+                        'tag-text': '#475569',         // Slate-600, for tag text
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom CSS Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            /* Primary-bg */
+            color: #334155;
+            /* Text-body */
+        }
+
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            /* Slate-100 */
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            /* Slate-300 */
+            border-radius: 20px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+            /* Slate-400 */
+        }
+
+        /* Active navigation link style */
+        .active-nav {
+            color: #065f46 !important;
+            /* Brand-rich-green */
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #065f46;
+            /* Brand-rich-green */
+        }
+
+        /* Section fade-in animation */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile menu transition */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            background-color: #ffffff;
+            /* Primary-bg */
+        }
+
+        #mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Project slider styles */
+        .project-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            /* rounded-lg */
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            /* Elastic transition */
+        }
+
+        .slider-item {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.7);
+            /* White alpha */
+            color: #065f46;
+            /* Brand-rich-green */
+            border: 1px solid #e2e8f0;
+            /* Border-color */
+            border-radius: 9999px;
+            /* rounded-full */
+            width: 2.5rem;
+            /* w-10 */
+            height: 2.5rem;
+            /* h-10 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slider-btn:hover {
+            background-color: #f8fafc;
+            /* Card-bg */
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-btn.prev {
+            left: 0.5rem;
+            /* left-2 */
+        }
+
+        .slider-btn.next {
+            right: 0.5rem;
+            /* right-2 */
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 0.75rem;
+            /* bottom-3 */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            /* gap-2 */
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 0.6rem;
+            /* w-2.5 */
+            height: 0.6rem;
+            /* h-2.5 */
+            border-radius: 9999px;
+            /* rounded-full */
+            background-color: #cbd5e1;
+            /* Slate-300 */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background-color: #065f46;
+            /* Brand-rich-green */
+            transform: scale(1.2);
+        }
+
+        /* Timeline for Education/Experience */
+        .timeline-item {
+            position: relative;
+            padding-left: 2.5rem;
+            /* pl-10 */
+            padding-bottom: 2rem;
+            /* pb-8 */
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            /* Adjusted */
+            top: 0.25rem;
+            /* top-1 */
+            width: 2px;
+            height: 100%;
+            background-color: #e2e8f0;
+            /* Border-color */
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            /* top-1 */
+            width: 1.5rem;
+            /* w-6 */
+            height: 1.5rem;
+            /* h-6 */
+            border-radius: 9999px;
+            /* rounded-full */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            /* Primary-bg */
+            border: 2px solid #065f46;
+            /* Brand-rich-green */
+            z-index: 1;
+        }
+
+        .timeline-icon-inner {
+            width: 0.5rem;
+            /* w-2 */
+            height: 0.5rem;
+            /* h-2 */
+            border-radius: 9999px;
+            /* rounded-full */
+            background-color: #065f46;
+            /* Brand-rich-green */
+        }
+
+        /* Custom focus styles for accessibility */
+        input:focus,
+        textarea:focus,
+        button:focus-visible {
+            outline: 2px solid #065f46 !important;
+            /* Brand-rich-green */
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body class="bg-primary-bg text-text-body font-inter antialiased relative">
+
+    <!-- Header & Navigation -->
+    <header id="header"
+        class="bg-primary-bg/80 backdrop-blur-md sticky top-0 z-40 w-full transition-all duration-300 shadow-md">
+        <nav class="container mx-auto max-w-7xl px-6 py-4 flex justify-between items-center">
+            <!-- Logo / Name --><a href="#home"
+                class="text-2xl font-bold text-text-header hover:text-brand-rich-green transition-colors duration-300">
+                AC.
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#about" class="nav-link text-text-body font-medium">About Me</a>
+                <a href="#education" class="nav-link text-text-body font-medium">Education</a>
+                <a href="#experience" class="nav-link text-text-body font-medium">Experience</a>
+                <a href="#projects" class="nav-link text-text-body font-medium">Projects</a>
+                <a href="#skills" class="nav-link text-text-body font-medium">Skills</a>
+                <a href="#contact"
+                    class="nav-link text-brand-rich-green font-medium border border-brand-rich-green px-4 py-2 rounded-md hover:bg-brand-rich-green/10 transition-all duration-300">
+                    Contact
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-text-header focus:outline-none">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu (Fullscreen) -->
+        <div id="mobile-menu"
+            class="fixed top-0 right-0 h-full w-full max-w-xs bg-primary-bg z-50 p-8 shadow-2xl md:hidden">
+            <div class="flex justify-end mb-12">
+                <button id="mobile-menu-close-button" class="text-text-header focus:outline-none">
+                    <i data-lucide="x" class="w-8 h-8 text-brand-rich-green"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 h-full -mt-20">
+                <a href="#about" class="nav-link-mobile text-text-body text-2xl font-medium">About Me</a>
+                <a href="#education" class="nav-link-mobile text-text-body text-2xl font-medium">Education</a>
+                <a href="#experience" class="nav-link-mobile text-text-body text-2xl font-medium">Experience</a>
+                <a href="#projects" class="nav-link-mobile text-text-body text-2xl font-medium">Projects</a>
+                <a href="#skills" class="nav-link-mobile text-text-body text-2xl font-medium">Skills</a>
+                <a href="#contact"
+                    class="nav-link-mobile text-brand-rich-green text-2xl font-medium border border-brand-rich-green px-6 py-3 rounded-md hover:bg-brand-rich-green/10 transition-all duration-300">
+                    Contact
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto max-w-7xl px-6">
+
+        <!-- Section 1: Hero / Home -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative -mt-16">
+            <div class="flex flex-col-reverse md:flex-row items-center justify-between w-full z-10">
+                <!-- Left Content -->
+                <div class="md:w-3/5 text-center md:text-left mt-12 md:mt-0">
+                    <span class="text-brand-rich-green text-lg font-medium">Hi, my name is</span>
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold text-text-header mt-4">
+                        Alex Chen.
+                    </h1>
+                    <h2
+                        class="text-3xl sm:text-5xl lg:text-6xl font-bold text-brand-dark-blue mt-3 h-20 md:h-24 flex items-center justify-center md:justify-start">
+                        Mechanical Engineering Student
+                    </h2>
+                    <p class="text-lg text-text-body max-w-lg mt-6">
+                        I am a passionate mechanical engineering student focusing on design, analysis, and innovation. I
+                        thrive on tackling complex challenges and creating robust solutions that push the boundaries of
+                        what's possible.
+                    </p>
+                    <div class="mt-10 flex gap-4 justify-center md:justify-start">
+                        <a href="#projects"
+                            class="text-brand-rich-green text-lg font-medium border-2 border-brand-rich-green px-8 py-4 rounded-md hover:bg-brand-rich-green/10 transition-all duration-300">
+                            View My Projects
+                        </a>
+                        <a href="#contact"
+                            class="text-text-body text-lg font-medium border-2 border-text-body px-8 py-4 rounded-md hover:bg-text-body/10 transition-all duration-300">
+                            Connect With Me
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Image: Abstract Gears -->
+                <div class="md:w-2/5 flex justify-center z-10">
+                    <div
+                        class="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-brand-rich-green/50 shadow-2xl relative group">
+                        <img src="https://placehold.co/400x400/1e3a8a/FFFFFF/png?text=GEARS&font=inter"
+                            alt="Abstract mechanical gears representing engineering"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            onerror="this.src='https://placehold.co/400x400/1e3a8a/FFFFFF/png?text=Image+Error&font=inter'">
+                        <div
+                            class="absolute inset-0 bg-brand-rich-green/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll Down Indicator --><a href="#about" class="absolute bottom-10 z-10 hidden md:block">
+                <div class="w-6 h-10 border-2 border-text-body rounded-full p-1">
+                    <div class="w-full h-2 bg-text-body rounded-full animate-bounce"></div>
+                </div>
+                <span class="mt-2 text-text-body text-xs tracking-widest">SCROLL</span>
+            </a>
+        </section>
+
+        <!-- Section 2: About Me -->
+        <section id="about" class="py-24 lg:py-32 fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-4 flex items-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">01.</span>
+                About Me
+                <span class="h-px bg-border-color w-full md:w-1/3 ml-6"></span>
+            </h2>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-2/3 space-y-4 text-lg">
+                    <p>
+                        Greetings! I'm Alex, a dedicated mechanical engineering student currently based in Engineering
+                        Hub City, USA. My fascination with how things work, from the simplest lever to complex robotic
+                        systems, sparked my journey into this field. I am driven by the desire to innovate and engineer
+                        practical solutions.
+                    </p>
+                    <p>
+                        My academic pursuits and extracurricular projects have provided me with a strong foundation in
+                        mechanical design, thermodynamics, fluid dynamics, and materials science. I am particularly
+                        interested in robotics, sustainable energy systems, and advanced manufacturing techniques.
+                    </p>
+                    <p>
+                        Outside of my studies, you can find me tinkering with DIY projects, hiking in the local
+                        mountains, or exploring new concepts in engineering magazines.
+                    </p>
+                </div>
+                <div class="md:w-1/3 flex justify-center items-start">
+                    <div class="w-full bg-card-bg p-6 rounded-lg shadow-lg border border-border-color">
+                        <h3 class="text-xl font-semibold text-text-header mb-4">Engineering Focus</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center"><i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-brand-rich-green mr-2"></i>Product Design</li>
+                            <li class="flex items-center"><i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-brand-rich-green mr-2"></i>CAD & FEA</li>
+                            <li class="flex items-center"><i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-brand-rich-green mr-2"></i>Robotics & Automation</li>
+                            <li class="flex items-center"><i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-brand-rich-green mr-2"></i>Thermo-Fluids</li>
+                            <li class="flex items-center"><i data-lucide="chevron-right"
+                                    class="w-4 h-4 text-brand-rich-green mr-2"></i>Manufacturing Processes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Education -->
+        <section id="education" class="py-24 lg:py-32 fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-12 flex items-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">02.</span>
+                Education
+                <span class="h-px bg-border-color w-full md:w-1/3 ml-6"></span>
+            </h2>
+
+            <div class="relative">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">B.S. in Mechanical Engineering</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">2021 - Present</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/065f46/FFFFFF?text=UNI&font=inter"
+                            alt="University of Technology Logo"
+                            class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/065f46/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-dark-blue font-medium">University of Technology</p>
+                    </div>
+                    <p class="text-text-body">
+                        Current coursework includes advanced mechanics, CAD/CAM, robotics, and thermodynamics. Actively
+                        involved in the collegiate engineering design team.
+                    </p>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">High School Diploma (Engineering Track)</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">2017 - 2021</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/1e3a8a/FFFFFF?text=HS&font=inter"
+                            alt="Central High School Logo" class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/1e3a8a/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-dark-blue font-medium">Central High School</p>
+                    </div>
+                    <p class="text-text-body">
+                        Participated in robotics club, winning regional competitions. Completed advanced placement
+                        courses in Physics and Calculus.
+                    </p>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">Certificate in CAD Design</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">Summer 2020</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/ea580c/FFFFFF?text=CAD&font=inter"
+                            alt="Design Institute Logo" class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/ea580c/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-dark-blue font-medium">Global Design Institute</p>
+                    </div>
+                    <p class="text-text-body">
+                        Comprehensive training in SolidWorks and AutoCAD, focusing on advanced part modeling and
+                        assembly design.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Experience -->
+        <section id="experience" class="py-24 lg:py-32 fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-12 flex items-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">03.</span>
+                Experience
+                <span class="h-px bg-border-color w-full md:w-1/3 ml-6"></span>
+            </h2>
+
+            <div class="relative">
+                <!-- Experience Item 1 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">Research Assistant (Robotics Lab)</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">Summer 2023 - Present</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/065f46/FFFFFF?text=RL&font=inter" alt="Robotics Lab Logo"
+                            class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/065f46/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-rich-green font-medium">@ University Robotics Lab</p>
+                    </div>
+                    <ul class="list-none space-y-3">
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Assisted in the design and fabrication of a new modular robotic arm prototype.</span>
+                        </li>
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Conducted stress analysis using FEA software to optimize component weight and
+                                performance.</span>
+                        </li>
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Programmed control algorithms for robot navigation and object manipulation using
+                                Python.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 2 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">Engineering Intern</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">Summer 2022</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/1e3a8a/FFFFFF?text=EMC&font=inter"
+                            alt="Elite Manufacturing Co. Logo"
+                            class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/1e3a8a/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-rich-green font-medium">@ Elite Manufacturing Co.</p>
+                    </div>
+                    <ul class="list-none space-y-3">
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Assisted in process optimization for assembly lines, reducing waste by 15%.</span>
+                        </li>
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Created detailed CAD drawings for custom tooling using SolidWorks.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Experience Item 3 -->
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <div class="timeline-icon-inner"></div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-2">
+                        <h3 class="text-xl font-semibold text-text-header">CAD Technician (Part-time)</h3>
+                        <span class="text-sm font-medium text-text-body mt-1 sm:mt-0">Sept 2021 - May 2022</span>
+                    </div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="https://placehold.co/50x50/ea580c/FFFFFF?text=DES&font=inter"
+                            alt="Dynamic Engineering Solutions Logo"
+                            class="w-10 h-10 rounded-full border-2 border-border-color"
+                            onerror="this.src='https://placehold.co/50x50/ea580c/FFFFFF?text=Logo&font=inter'">
+                        <p class="text-lg text-brand-rich-green font-medium">@ Dynamic Engineering Solutions</p>
+                    </div>
+                    <ul class="list-none space-y-3">
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Drafted technical drawings and schematics for client projects using AutoCAD and
+                                Inventor.</span>
+                        </li>
+                        <li class="flex">
+                            <i data-lucide="chevron-right"
+                                class="w-4 h-4 text-brand-rich-green mr-2 mt-1.5 flex-shrink-0"></i>
+                            <span>Assisted senior engineers with design modifications and component sourcing.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Projects -->
+        <section id="projects" class="py-24 lg:py-32 fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-12 flex items-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">04.</span>
+                Engineering Projects
+                <span class="h-px bg-border-color w-full md:w-1/3 ml-6"></span>
+            </h2>
+
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+
+                <!-- Project 1 -->
+                <div
+                    class="bg-card-bg rounded-lg shadow-lg overflow-hidden border border-border-color transform transition-transform duration-300 hover:-translate-y-2">
+                    <!-- Project 1 Slider -->
+                    <div class="project-slider" data-project-id="1">
+                        <div class="slider-track">
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/1e3a8a/FFFFFF?text=Robotic+Arm+Render&font=inter"
+                                    alt="Robotic Arm Design" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/1e3a8a/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/065f46/FFFFFF?text=FEA+Analysis&font=inter"
+                                    alt="FEA Analysis" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/065f46/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/ea580c/FFFFFF?text=Prototype&font=inter"
+                                    alt="Physical Prototype" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/ea580c/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                        </div>
+                        <button class="slider-btn prev"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        <button class="slider-btn next"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        <div class="slider-dots"></div>
+                    </div>
+                    <!-- Project 1 Content -->
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-text-header mb-3">Modular Robotic Gripper Design</h3>
+                        <p class="text-text-body mb-4">
+                            Designed and prototyped a versatile robotic gripper with interchangeable modules for
+                            different manipulation tasks.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">SolidWorks</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">FEA</span>
+                            <span class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">3D
+                                Printing</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Mechatronics</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="GitHub link for project 1">
+                                <i data-lucide="github" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="External link for project 1">
+                                <i data-lucide="external-link" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div
+                    class="bg-card-bg rounded-lg shadow-lg overflow-hidden border border-border-color transform transition-transform duration-300 hover:-translate-y-2">
+                    <!-- Project 2 Slider -->
+                    <div class="project-slider" data-project-id="2">
+                        <div class="slider-track">
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/065f46/FFFFFF?text=Sustainable+Fan+Design&font=inter"
+                                    alt="Sustainable Fan Design" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/065f46/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/1e3a8a/FFFFFF?text=Fluid+Simulation&font=inter"
+                                    alt="Fluid Simulation" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/1e3a8a/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                        </div>
+                        <button class="slider-btn prev"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        <button class="slider-btn next"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        <div class="slider-dots"></div>
+                    </div>
+                    <!-- Project 2 Content -->
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-text-header mb-3">Optimized HVAC Blower Fan</h3>
+                        <p class="text-text-body mb-4">
+                            Re-designed an industrial blower fan for improved efficiency and reduced energy consumption
+                            using CFD simulations.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">ANSYS
+                                Fluent</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Thermodynamics</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">SolidWorks</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="GitHub link for project 2">
+                                <i data-lucide="github" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div
+                    class="bg-card-bg rounded-lg shadow-lg overflow-hidden border border-border-color transform transition-transform duration-300 hover:-translate-y-2">
+                    <!-- Project 3 Slider -->
+                    <div class="project-slider" data-project-id="3">
+                        <div class="slider-track">
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/ea580c/FFFFFF?text=Custom+Jig+Design&font=inter"
+                                    alt="Custom Manufacturing Jig" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/ea580c/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/1e3a8a/FFFFFF?text=Assembly+Drawing&font=inter"
+                                    alt="Assembly Drawing" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/1e3a8a/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/065f46/FFFFFF?text=Fabricated+Part&font=inter"
+                                    alt="Fabricated Part" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/065f46/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                        </div>
+                        <button class="slider-btn prev"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        <button class="slider-btn next"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        <div class="slider-dots"></div>
+                    </div>
+                    <!-- Project 3 Content -->
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-text-header mb-3">Automated Fixture for Machining</h3>
+                        <p class="text-text-body mb-4">
+                            Designed a custom automated jig to improve precision and reduce setup time in a CNC
+                            machining process.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">AutoCAD</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">GD&T</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Manufacturing</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Automation</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="GitHub link for project 3">
+                                <i data-lucide="github" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="External link for project 3">
+                                <i data-lucide="external-link" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div
+                    class="bg-card-bg rounded-lg shadow-lg overflow-hidden border border-border-color transform transition-transform duration-300 hover:-translate-y-2">
+                    <!-- Project 4 Slider -->
+                    <div class="project-slider" data-project-id="4">
+                        <div class="slider-track">
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/ea580c/FFFFFF?text=Drone+Concept&font=inter"
+                                    alt="Drone Concept Design" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/ea580c/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                            <div class="slider-item">
+                                <img src="https://placehold.co/600x400/065f46/FFFFFF?text=Aerodynamic+Sim&font=inter"
+                                    alt="Aerodynamic Simulation" class="w-full h-64 object-cover"
+                                    onerror="this.src='https://placehold.co/600x400/065f46/FFFFFF?text=Image+Error&font=inter'">
+                            </div>
+                        </div>
+                        <button class="slider-btn prev"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                        <button class="slider-btn next"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                        <div class="slider-dots"></div>
+                    </div>
+                    <!-- Project 4 Content -->
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-text-header mb-3">Miniature Autonomous Drone (Capstone)
+                        </h3>
+                        <p class="text-text-body mb-4">
+                            Led a team to design a lightweight, energy-efficient drone for environmental monitoring.
+                            Focused on aerodynamics and power systems.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">NX
+                                CAD</span>
+                            <span
+                                class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Aerodynamics</span>
+                            <span class="bg-tag-bg text-tag-text text-xs font-semibold px-3 py-1 rounded-full">Materials
+                                Science</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#"
+                                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                                aria-label="Project report link for project 4">
+                                <i data-lucide="external-link" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 6: Skills -->
+        <section id="skills" class="py-24 lg:py-32 fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-12 flex items-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">05.</span>
+                My Toolkit
+                <span class="h-px bg-border-color w-full md:w-1/3 ml-6"></span>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- CAD & Simulation -->
+                <div class="bg-card-bg p-6 rounded-lg shadow-lg border border-border-color">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i data-lucide="shapes" class="w-8 h-8 text-brand-rich-green"></i>
+                        <h3 class="text-xl font-bold text-text-header">CAD & Simulation</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">SolidWorks</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">AutoCAD</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Inventor</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">NX
+                            CAD</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">ANSYS
+                            (FEA/CFD)</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">MATLAB
+                            Simulink</span>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div class="bg-card-bg p-6 rounded-lg shadow-lg border border-border-color">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i data-lucide="gear" class="w-8 h-8 text-brand-rich-green"></i>
+                        <h3 class="text-xl font-bold text-text-header">Technical Skills</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Mechanical
+                            Design</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Finite
+                            Element Analysis</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Fluid
+                            Dynamics</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Thermodynamics</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Materials
+                            Science</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Manufacturing
+                            Processes</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">GD&T</span>
+                    </div>
+                </div>
+
+                <!-- Programming & Tools -->
+                <div class="bg-card-bg p-6 rounded-lg shadow-lg border border-border-color">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i data-lucide="code" class="w-8 h-8 text-brand-rich-green"></i>
+                        <h3 class="text-xl font-bold text-text-header">Programming & Tools</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Python</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">MATLAB</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Arduino
+                            IDE</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Git
+                            & GitHub</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">LabVIEW</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Microsoft
+                            Office</span>
+                        <span
+                            class="bg-primary-bg border border-border-color text-tag-text px-4 py-2 rounded-md font-medium">Technical
+                            Drawing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Contact -->
+        <section id="contact" class="py-24 lg:py-32 text-center max-w-2xl mx-auto fade-in-section">
+            <h2 class="text-3xl font-bold text-text-header mb-4 flex items-center justify-center">
+                <span class="text-brand-rich-green font-mono text-2xl mr-3">06.</span>
+                What's Next?
+            </h2>
+            <h3 class="text-5xl font-bold text-text-header mb-6">Get In Touch</h3>
+            <p class="text-lg text-text-body mb-10">
+                I'm actively seeking internship opportunities, collaborative projects, or discussions about the latest
+                in mechanical engineering. Feel free to reach out—I'm always excited to connect!
+            </p>
+
+            <form id="contact-form" class="space-y-6">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <input type="text" name="name" placeholder="Your Name" required
+                        class="w-full bg-primary-bg border border-border-color text-text-header p-4 rounded-md placeholder-text-body focus:border-brand-rich-green focus:ring-0">
+                    <input type="email" name="email" placeholder="Your Email" required
+                        class="w-full bg-primary-bg border border-border-color text-text-header p-4 rounded-md placeholder-text-body focus:border-brand-rich-green focus:ring-0">
+                </div>
+                <div>
+                    <textarea name="message" rows="5" placeholder="Your Message" required
+                        class="w-full bg-primary-bg border border-border-color text-text-header p-4 rounded-md placeholder-text-body focus:border-brand-rich-green focus:ring-0"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit"
+                        class="text-brand-rich-green text-lg font-medium border-2 border-brand-rich-green px-12 py-4 rounded-md hover:bg-brand-rich-green/10 transition-all duration-300 w-full md:w-auto">
+                        Send Message
+                    </button>
+                </div>
+                <div id="form-success-message" class="hidden text-brand-rich-green text-lg mt-6">
+                    Thanks for your message! I'll be in touch soon.
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 fade-in-section">
+        <div class="flex justify-center items-center gap-6 mb-6">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                aria-label="GitHub Profile">
+                <i data-lucide="github" class="w-6 h-6"></i>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                aria-label="LinkedIn Profile">
+                <i data-lucide="linkedin" class="w-6 h-6"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                class="text-text-body hover:text-brand-rich-green transition-colors duration-300"
+                aria-label="Twitter Profile">
+                <i data-lucide="twitter" class="w-6 h-6"></i>
+            </a>
+            <a href="mailto:alex.chen@email.com"
+                class="text-text-body hover:text-brand-rich-green transition-colors duration-300" aria-label="Email Me">
+                <i data-lucide="mail" class="w-6 h-6"></i>
+            </a>
+        </div>
+        <p class="text-center text-text-body text-sm font-mono">
+            Designed & Built by Alex Chen<br>
+            Inspired by modern web trends
+        </p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        window.addEventListener('load', () => {
+
+            // 1. Initialize Lucide Icons
+            lucide.createIcons();
+
+            // 2. Hide Header on Scroll
+            let lastScrollTop = 0;
+            const header = document.getElementById('header');
+            const headerHeight = header.offsetHeight;
+
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop && scrollTop > headerHeight * 2) {
+                    // Scrolling Down
+                    header.classList.add('-translate-y-full');
+                } else {
+                    // Scrolling Up
+                    header.classList.remove('-translate-y-full');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+            }, false);
+
+            // 3. Mobile Menu Toggle
+            const menuButton = document.getElementById('mobile-menu-button');
+            const closeButton = document.getElementById('mobile-menu-close-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.nav-link-mobile');
+
+            const toggleMenu = () => {
+                mobileMenu.classList.toggle('open');
+                document.body.classList.toggle('overflow-hidden'); // Prevent scrolling when menu is open
+            };
+
+            menuButton.addEventListener('click', toggleMenu);
+            closeButton.addEventListener('click', toggleMenu);
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('open')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 4. Smooth Scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // Calculate offset for sticky header
+                        const headerOffset = document.getElementById('header').offsetHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 10; // 10px buffer
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 5. Section Fade-in on Scroll
+            const sections = document.querySelectorAll('.fade-in-section');
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // 6. Active Nav Link on Scroll
+            const navLinks = document.querySelectorAll('.nav-link');
+            const allSections = document.querySelectorAll('section[id]');
+
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, {
+                root: null,
+                // Trigger when 50% of the section is in the middle of the viewport
+                rootMargin: '-50% 0px -50% 0px',
+                threshold: 0
+            });
+
+            allSections.forEach(section => {
+                navObserver.observe(section);
+            });
+
+            // 7. Project Sliders
+            document.querySelectorAll('.project-slider').forEach(initSlider);
+
+            function initSlider(slider) {
+                const track = slider.querySelector('.slider-track');
+                const items = slider.querySelectorAll('.slider-item');
+                const prevBtn = slider.querySelector('.slider-btn.prev');
+                const nextBtn = slider.querySelector('.slider-btn.next');
+                const dotsContainer = slider.querySelector('.slider-dots');
+
+                if (items.length <= 1) {
+                    if (prevBtn) prevBtn.style.display = 'none';
+                    if (nextBtn) nextBtn.style.display = 'none';
+                    if (dotsContainer) dotsContainer.style.display = 'none';
+                    return;
+                }
+
+                let currentIndex = 0;
+                let dots = [];
+
+                // Create dots
+                for (let i = 0; i < items.length; i++) {
+                    const dot = document.createElement('button');
+                    dot.classList.add('slider-dot');
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => {
+                        goToSlide(i);
+                    });
+                    dotsContainer.appendChild(dot);
+                    dots.push(dot);
+                }
+
+                function updateSlider() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentIndex);
+                    });
+                }
+
+                function goToSlide(index) {
+                    currentIndex = index;
+                    updateSlider();
+                }
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+                    updateSlider();
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+                    updateSlider();
+                });
+
+                // Initialize first slide
+                updateSlider();
+            }
+
+            // 8. Contact Form
+            const contactForm = document.getElementById('contact-form');
+            const successMessage = document.getElementById('form-success-message');
+
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                // This is a demo. In a real app, you'd send this data to a server.
+                // For example: fetch('/api/contact', { method: 'POST', body: new FormData(this) })
+
+                // Show success message
+                successMessage.classList.remove('hidden');
+                contactForm.reset();
+
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+
+</html>
